@@ -1,82 +1,84 @@
-# Malicious URL Detection — Multi-Model Comparative Analysis
+# Machine Learning-Based URL Classification
 
-> **Machine Learning & Cybersecurity Project** | ESI-SBA | 2024/2025
+**Machine Learning Project — ESI-SBA, 2024–2025**
+
+---
 
 ## Overview
 
-A comprehensive cybersecurity project implementing and comparing multiple machine learning and deep learning approaches for detecting malicious URLs. The system classifies URLs into four threat categories (benign, defacement, phishing, malware) using TF-IDF character n-gram features and a suite of traditional and neural models. This work demonstrates end-to-end ML pipeline design, from feature engineering to model evaluation and comparative benchmarking.
+This project presents a comparative study of machine learning and deep learning models for multi-class URL classification. Four model families are trained and evaluated on a large-scale labeled dataset, with the goal of identifying the approach that best balances classification accuracy and generalization across URL categories. Feature engineering combines statistical text representations with handcrafted structural descriptors.
+
+---
 
 ## Dataset
 
-- **Source:** [Kaggle Malicious URLs Dataset](https://www.kaggle.com/datasets/sid321axn/malicious-urls-dataset)
 - **Size:** 651,191 URLs
-- **Classes:** Benign, Defacement, Phishing, Malware
-- **Split:** 80/20 stratified train-test
+- **Classes:** 4 — benign, defacement, phishing, malware
+- **Split:** 80% training / 20% test (stratified by class)
+- **Source:** Publicly available URL classification dataset
 
-## Feature Engineering
+---
 
-- **URL-based features:** length, special character counts, domain analysis, IP pattern detection, digit counts
-- **TF-IDF Vectorization:** character-level n-grams (3-5 grams), 10,000 features
-- **Total features:** 15+ handcrafted + 10,000 TF-IDF
+## Objectives
 
-## Models Implemented
+- Engineer a hybrid feature set combining TF-IDF character n-gram representations with handcrafted URL structural features.
+- Train and compare four model architectures (Logistic Regression, Random Forest, XGBoost, LSTM) under consistent evaluation conditions.
+- Identify the model configuration that achieves the highest F1-score across all four URL classes.
 
-| Model | Type | Key Parameters |
-|-------|------|---------------|
-| Logistic Regression | Traditional ML | One-vs-Rest, L2 regularization |
-| Random Forest | Ensemble ML | 100 estimators, feature importance |
-| XGBoost | Gradient Boosting | 100 estimators, optimized for speed |
-| LSTM | Deep Learning | Embedding (64d) → LSTM (100 units) → Dense → Softmax |
+---
+
+## Methodology
+
+1. **Feature Engineering**
+   - TF-IDF character n-grams (3–5 gram range, 10,000 features) applied to the raw URL string.
+   - 15+ handcrafted structural features: URL length, digit count, special character frequencies, domain structure analysis, IP address detection, subdomain depth, and path segment statistics.
+
+2. **Model Training**
+   - Each model is trained on the combined feature matrix.
+   - Hyperparameters are tuned per model; class imbalance is addressed through stratified sampling.
+
+3. **Comparative Evaluation**
+   - Models are evaluated on the held-out test set using accuracy and macro-averaged F1-score.
+   - Results are analyzed per class and aggregated for overall comparison.
+
+---
+
+## Models
+
+| Model               | Type                  | Key Configuration                                      |
+|---------------------|-----------------------|--------------------------------------------------------|
+| Logistic Regression | Linear classifier     | L2 regularization, multi-class one-vs-rest             |
+| Random Forest       | Ensemble (bagging)    | 100 estimators, feature subsampling                    |
+| XGBoost             | Ensemble (boosting)   | Gradient boosted trees, early stopping                 |
+| LSTM                | Deep learning (RNN)   | Sequence model on character-level URL encoding         |
+
+---
+
+## Technologies
+
+Python · Scikit-learn · XGBoost · TensorFlow · Pandas · NumPy · Matplotlib · Jupyter Notebook
+
+---
 
 ## Results
 
-| Model | Accuracy | F1-Score | Training Time |
-|-------|----------|----------|---------------|
-| Logistic Regression | 95.5% | 95.4% | ~45s |
-| **Random Forest** | **96.8%** | **96.7%** | ~180s |
-| XGBoost | 96.5% | 96.4% | ~120s |
-| LSTM | 94.2% | 94.1% | ~450s |
+| Model               | Accuracy | F1-Score     |
+|---------------------|----------|--------------|
+| Logistic Regression | 95.5%    | 95.4%        |
+| **Random Forest**   | **96.8%**| **96.7%**    |
+| XGBoost             | 96.5%    | 96.4%        |
+| LSTM                | 94.2%    | 94.1%        |
 
-**Best Overall:** Random Forest (highest F1-score with balanced performance).
+> Random Forest achieved the highest macro-averaged F1-score of 96.8% across all four classes.
 
-## Tech Stack
+---
 
-- Python 3.8+, Jupyter Notebooks
-- Scikit-learn, XGBoost, TensorFlow/Keras
-- Pandas, NumPy, Matplotlib, Seaborn, Plotly
+## Report
 
-## Repository Structure
+[Project Report](report.pdf)
 
-```
-.
-├── code.ipynb              # Main implementation notebook
-├── report.pdf              # Detailed project report
-├── README.md                 # This file
-└── Generated Outputs/        # Visualizations (auto-generated)
-```
+---
 
-## Usage
+Academic Project — Higher School of Computer Science (ESI-SBA), Sidi Bel Abbès, Algeria — 2024/2025
 
-```bash
-# Install dependencies
-pip install pandas numpy matplotlib seaborn scikit-learn xgboost tensorflow plotly
-
-# Run the notebook
-jupyter notebook code.ipynb
-```
-
-## Key Insights
-
-1. **Random Forest** achieved the best trade-off between accuracy and interpretability.
-2. **TF-IDF character n-grams** (3-5) significantly outperformed word-level features for URL classification.
-3. **LSTM** showed promise but required more tuning and data to match ensemble methods.
-4. Feature importance analysis revealed URL length and special character density as top predictors.
-
-## Authors
-
-**Adem Toumi** — ESI-SBA, Engineering Degree in AI & Data Science  
-**Ahmed Saadi** — ESI-SBA, Engineering Degree & M2 in AI & Data Science
-
-## License
-
-MIT
+Authors: Adem Toumi — ESI-SBA | Ahmed Saadi — ESI-SBA
